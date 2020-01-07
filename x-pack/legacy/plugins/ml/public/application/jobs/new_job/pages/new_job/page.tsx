@@ -151,7 +151,7 @@ export const Page: FC<PageProps> = ({ existingJobsAndGroups, jobType }) => {
 
   return (
     <Fragment>
-      <EuiPage style={{ backgroundColor: 'inherit' }} data-test-subj={`mlPageJobWizard ${jobType}`}>
+      <EuiPage style={{ backgroundColor: 'white' }} data-test-subj={`mlPageJobWizard ${jobType}`}>
         <EuiPageBody>
           <EuiPageContentBody>
             <Wizard

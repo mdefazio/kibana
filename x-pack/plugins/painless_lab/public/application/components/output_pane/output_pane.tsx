@@ -12,6 +12,7 @@ import {
   EuiLoadingSpinner,
   EuiPanel,
   EuiTabbedContent,
+  EuiText,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 
@@ -26,36 +27,54 @@ interface Props {
 }
 
 export const OutputPane: FunctionComponent<Props> = ({ isLoading, response }) => {
-  const outputTabLabel = (
-    <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-      <EuiFlexItem grow={false}>
-        {isLoading ? (
-          <EuiLoadingSpinner size="m" />
-        ) : response && response.error ? (
-          <EuiIcon type="alert" color="danger" />
-        ) : (
-          <EuiIcon type="check" color="secondary" />
-        )}
-      </EuiFlexItem>
-
-      <EuiFlexItem grow={false}>
-        {i18n.translate('xpack.painlessLab.outputTabLabel', {
-          defaultMessage: 'Output',
-        })}
-      </EuiFlexItem>
-    </EuiFlexGroup>
+  const successLabels = (
+    <div>
+      {isLoading ? (
+        <EuiFlexGroup gutterSize="s">
+          <EuiFlexItem>
+            <EuiLoadingSpinner size="m" />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      ) : response && response.error ? (
+        <EuiFlexGroup alignItems="flexStart" gutterSize="s">
+          <EuiFlexItem grow={false}>
+            <EuiIcon type="alert" color="danger" title="error" />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiText size="xs" color="danger">
+              <p>Contains errors</p>
+            </EuiText>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      ) : (
+        <EuiFlexGroup alignItems="flexStart" gutterSize="s">
+          <EuiFlexItem grow={false}>
+            <EuiIcon type="check" color="secondary" title="success" />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiText size="xs" color="secondary">
+              <p>No errors</p>
+            </EuiText>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      )}
+    </div>
   );
 
   return (
     <EuiPanel className="painlessLabRightPane">
+      {successLabels}
+
       <EuiTabbedContent
         className="painlessLabRightPane__tabs"
         size="s"
+        display="condensed"
         tabs={[
           {
             id: 'output',
-            // TODO: Currently this causes an Eui prop error because it is expecting string, but we give it React.ReactNode - should fix.
-            name: outputTabLabel as any,
+            name: i18n.translate('xpack.painlessLab.outputTabLabel', {
+              defaultMessage: 'Output',
+            }),
             content: <OutputTab response={response} />,
           },
           {

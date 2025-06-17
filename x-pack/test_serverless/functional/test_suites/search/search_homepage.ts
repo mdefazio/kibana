@@ -92,5 +92,24 @@ export default function ({ getPageObjects, getService }: FtrProviderContext) {
         await pageObjects.svlSearchHomePage.expectToBeOnCustomerEngineerPage();
       });
     });
+
+    describe('AI search capabilities', function () {
+      it('renders Semantic Search content', async () => {
+        await testSubjects.existOrFail('aiSearchCapabilities-item-semantic');
+        await testSubjects.existOrFail('createSemanticOptimizedIndexButton');
+      });
+
+      it('renders Vector Search content', async () => {
+        await testSubjects.existOrFail('aiSearchCapabilities-item-vector');
+        await testSubjects.click('aiSearchCapabilities-item-vector');
+        await testSubjects.existOrFail('createVectorIndexButton');
+      });
+
+      it('renders Vector Search content', async () => {
+        await testSubjects.existOrFail('aiSearchCapabilities-item-keyword');
+        await testSubjects.click('aiSearchCapabilities-item-keyword');
+        await testSubjects.existOrFail('createKeywordIndexButton');
+      });
+    });
   });
 }

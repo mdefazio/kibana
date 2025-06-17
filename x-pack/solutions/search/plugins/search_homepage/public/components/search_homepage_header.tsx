@@ -16,6 +16,7 @@ import {
   EuiText,
   EuiTitle,
   EuiSpacer,
+  useCurrentEuiBreakpoint
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 
@@ -25,6 +26,8 @@ import SearchHomePageImageDark from '../assets/search_homepage_dark.svg';
 export const SearchHomepageHeader: React.FC = () => {
   const { euiTheme } = useEuiTheme();
   const { colorMode } = useEuiTheme();
+    const currentBreakpoint = useCurrentEuiBreakpoint();
+
   return (
     <EuiPageTemplate.Section
       data-test-subj="search-homepage-header"
@@ -34,10 +37,11 @@ export const SearchHomepageHeader: React.FC = () => {
       <EuiFlexGroup
         gutterSize="m"
         alignItems="stretch"
-        style={{
-          paddingLeft: euiTheme.size.xxxl,
-          paddingRight: euiTheme.size.xxxl,
-        }}
+        direction={
+          (currentBreakpoint === "s") || (currentBreakpoint === "m") || (currentBreakpoint === "l")
+            ? "columnReverse"
+            : "row"
+        }
       >
         <EuiFlexItem style={{ alignSelf: 'center' }}>
           <EuiPanel color="transparent" paddingSize="xl">
@@ -100,6 +104,7 @@ export const SearchHomepageHeader: React.FC = () => {
         </EuiFlexItem>
 
         <EuiFlexItem>
+          <p>image</p>
           {/* {colorMode === 'LIGHT' ? <SearchHomePageImageLight /> : <SearchHomePageImageDark />} */}
         </EuiFlexItem>
       </EuiFlexGroup>

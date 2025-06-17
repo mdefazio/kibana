@@ -10,19 +10,10 @@ import {
   EuiListGroup,
   EuiListGroupItem,
   EuiTitle,
-  EuiPanel,
-  EuiSpacer,
-  EuiText,
-  EuiButton,
-  EuiImage,
+  useCurrentEuiBreakpoint
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import React, { useState } from 'react';
-import { useKibana } from '../../hooks/use_kibana';
-import { CREATE_INDEX } from '../../../common/constants';
-
-// Import capability components
-import { WorkflowFeatureBullet } from './workflow_feature_bullet';
 
 import { KeywordSearch } from './keyword_search';
 import { SemanticSearch } from './semantic_search';
@@ -60,6 +51,7 @@ export const AISearchCapabilities: React.FC = () => {
   const [selectedCapability, setSelectedCapability] = useState<string>(
     SEARCH_CAPABILITIES[0].value
   );
+  const currentBreakpoint = useCurrentEuiBreakpoint();
 
   const SelectedComponent = capabilityComponents[selectedCapability];
 
@@ -75,7 +67,11 @@ export const AISearchCapabilities: React.FC = () => {
         </EuiTitle>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiFlexGroup gutterSize="xl">
+        <EuiFlexGroup gutterSize="xl" direction={
+           (currentBreakpoint === "s") || (currentBreakpoint === "m")
+              ? "column"
+              : "row"
+        }>
           <EuiFlexItem grow={1}>
             <EuiListGroup>
               {SEARCH_CAPABILITIES.map((capability) => (

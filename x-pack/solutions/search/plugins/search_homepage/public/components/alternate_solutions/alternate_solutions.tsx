@@ -6,14 +6,16 @@
  */
 
 import React from 'react';
-import { EuiFlexGroup, EuiFlexItem, EuiTitle, EuiText, EuiSpacer } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiTitle, useCurrentEuiBreakpoint, EuiSpacer } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { Observability } from './observability';
 import { Security } from './security';
 
-export const AlternateSolutions: React.FC = () => (
-  <>
-  
+export const AlternateSolutions: React.FC = () => {
+    const currentBreakpoint = useCurrentEuiBreakpoint();
+
+  return (
+    <>
       <EuiTitle size="xxs">
         <h4>
           {i18n.translate('xpack.searchHomepage.threatDetectionSolutions.title', {
@@ -21,8 +23,11 @@ export const AlternateSolutions: React.FC = () => (
           })}
         </h4>
       </EuiTitle>
-    <EuiSpacer />
-      <EuiFlexGroup gutterSize="xl" direction="row">
+      <EuiSpacer />
+      <EuiFlexGroup
+        gutterSize="xl"
+        direction={currentBreakpoint === 'xl'  ? 'row' : 'column'}
+      >
         <EuiFlexItem>
           <Observability />
         </EuiFlexItem>
@@ -30,5 +35,6 @@ export const AlternateSolutions: React.FC = () => (
           <Security />
         </EuiFlexItem>
       </EuiFlexGroup>
-  </>
-);
+    </>
+  );
+};

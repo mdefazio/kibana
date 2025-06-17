@@ -16,6 +16,7 @@ import {
   EuiHorizontalRule,
   EuiText,
   EuiTitle,
+  useCurrentEuiBreakpoint,
 } from '@elastic/eui';
 import React from 'react';
 
@@ -32,13 +33,14 @@ const CREATE_API_KEY = '/app/management/security/api_keys/create';
 export const ConnectToElasticsearch = () => {
   const { http } = useKibana().services;
   const { data } = useGetApiKeys();
+  const currentBreakpoint = useCurrentEuiBreakpoint();
 
   return (
-    <EuiFlexGroup gutterSize='xl'>
+    <EuiFlexGroup gutterSize="xl" direction={currentBreakpoint === 'xl' ? 'row' : 'column'}>
       <EuiFlexItem grow={3}>
         <EuiFlexGroup direction="column" gutterSize="l">
           <EuiFlexItem grow={false}>
-            <EuiFlexGroup direction="column" gutterSize="s">
+            <EuiFlexGroup direction='column' gutterSize="s">
               <EuiFlexItem>
                 <EuiTitle size="m">
                   <h2>
@@ -49,19 +51,19 @@ export const ConnectToElasticsearch = () => {
                 </EuiTitle>
               </EuiFlexItem>
               <EuiFlexItem>
-                <EuiText grow={false} color='subdued'>
+                <EuiText grow={false} color="subdued">
                   <p>
-                  {i18n.translate('xpack.searchHomepage.connectToElasticsearch.description', {
-                    defaultMessage:
-                      'Set up your connection to Elasticsearch to start searching and analyzing your data.',
-                  })}
+                    {i18n.translate('xpack.searchHomepage.connectToElasticsearch.description', {
+                      defaultMessage:
+                        'Set up your connection to Elasticsearch to start searching and analyzing your data.',
+                    })}
                   </p>
                 </EuiText>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiFlexGroup alignItems="flexStart" gutterSize="l">
+            <EuiFlexGroup alignItems="flexStart" gutterSize="l" direction={currentBreakpoint === 'xl' ? 'row' : 'column'}>
               <EuiFlexItem grow={false}>
                 <EuiFlexGroup direction="column" gutterSize="s">
                   <EuiFlexItem grow={false}>

@@ -10,12 +10,12 @@ import {
   EuiText,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiIcon,
   EuiPanel,
   EuiImage,
   EuiTitle,
   EuiSpacer,
   EuiButton,
+  useCurrentEuiBreakpoint
 } from '@elastic/eui';
 
 import { CREATE_INDEX } from '../../../common/constants';
@@ -39,12 +39,21 @@ interface WorkflowProps {
 
 export const AISearchWorkflow = ({ capability }: {capability:WorkflowProps}) => {
   const { http } = useKibana().services;
-
+const currentBreakpoint = useCurrentEuiBreakpoint();
   return (
     <EuiPanel color="transparent" paddingSize="s">
-      <EuiFlexGroup gutterSize="l">
+      <EuiFlexGroup 
+      gutterSize="l"
+      direction={
+        (currentBreakpoint === "xl")
+            ? "row"
+            : "column"
+      }
+      >
         <EuiFlexItem grow={false}>
+          <span>
           <EuiImage src={capability.image} alt={capability.imageAlt} size="s" />
+          </span>
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiTitle size="s">

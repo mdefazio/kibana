@@ -10,6 +10,8 @@ import { docLinks } from '../../../common/doc_links';
 
 import React from 'react';
 
+
+
 export const SearchLabs: React.FC = () => (
   <EuiFlexGroup direction="column" gutterSize="m">
     <EuiFlexItem grow={false}>

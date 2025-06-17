@@ -20,7 +20,7 @@ import {
 import { i18n } from '@kbn/i18n';
 
 import SearchHomePageImageLight from '../assets/search_homepage_light.svg';
-// import SearchHomePageImageDark from '../assets/search_homepage_dark.svg';
+import SearchHomePageImageDark from '../assets/search_homepage_dark.svg';
 
 export const SearchHomepageHeader: React.FC = () => {
   const { euiTheme } = useEuiTheme();
@@ -100,7 +100,7 @@ export const SearchHomepageHeader: React.FC = () => {
         </EuiFlexItem>
 
         <EuiFlexItem>
-          {/* {colorMode === 'LIGHT' ? <SearchHomePageImageLight /> :""} */}
+          {/* {colorMode === 'LIGHT' ? <SearchHomePageImageLight /> : <SearchHomePageImageDark />} */}
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPageTemplate.Section>

@@ -6,13 +6,14 @@
  */
 
 import React from 'react';
-import { EuiFlexGroup, EuiFlexItem, EuiLink } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { docLinks } from '../../../common/doc_links';
 
 export const Footer: React.FC = () => (
+  <>
   <EuiFlexGroup justifyContent="spaceBetween" gutterSize="m">
-    <EuiFlexItem grow={false}>
+    <EuiFlexItem >
       <EuiLink
         href={docLinks.elasticCommunity}
         target="_blank"
@@ -23,7 +24,7 @@ export const Footer: React.FC = () => (
         })}
       </EuiLink>
     </EuiFlexItem>
-    <EuiFlexItem grow={false}>
+    <EuiFlexItem >
       <EuiLink href={docLinks.kibanaFeedback} target="_blank" data-test-subj="giveFeedbackLink">
         {i18n.translate('xpack.searchHomepage.footer.giveFeedback', {
           defaultMessage: 'Give feedback',
@@ -31,4 +32,6 @@ export const Footer: React.FC = () => (
       </EuiLink>
     </EuiFlexItem>
   </EuiFlexGroup>
+  <EuiSpacer size="l" />
+  </>
 );

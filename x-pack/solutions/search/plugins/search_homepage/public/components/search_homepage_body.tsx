@@ -14,7 +14,7 @@ import { DiveDeeperWithElasticsearch } from './dive_deeper/dive_deeper_with_elas
 import { Footer } from './footer/footer';
 
 export const SearchHomepageBody = () => (
-  <KibanaPageTemplate.Section alignment="top" restrictWidth={false} grow>
+  <KibanaPageTemplate.Section alignment="top" restrictWidth={false} grow paddingSize='xl'>
     <EuiFlexGroup gutterSize="l" direction="column">
       <EuiFlexItem>
         <ConnectToElasticsearch />

@@ -14,6 +14,8 @@ import {
   EuiSpacer,
   EuiLink,
   EuiIcon,
+  EuiAvatar,
+  useEuiTheme,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { useKibana } from '../../hooks/use_kibana';
@@ -21,21 +23,28 @@ const EXPLORE_LOGSTASH_AND_BEATS = '/app/integrations/browse/observability';
 const CREATE_OBSERVABILITY_SPACE = '/app/management/kibana/spaces/create';
 
 export const Observability: React.FC = () => {
+  const { euiTheme } = useEuiTheme();
   const { http } = useKibana().services;
   return (
     <EuiFlexGroup gutterSize="m">
       <EuiFlexItem grow={false}>
-        <EuiIcon type="logoObservability" size="xl" />
+        <EuiAvatar
+          size="xl"
+          color="plain"
+          name="Observability"
+          iconType="logoObservability"
+          style={{ border: euiTheme.border.thin }}
+        />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiFlexGroup direction="column" gutterSize="s">
           <EuiFlexItem grow={false}>
             <EuiTitle size="s">
-              <span>
+              <h4>
                 {i18n.translate('xpack.searchHomepage.observability.title', {
                   defaultMessage: 'Observability',
                 })}
-              </span>
+              </h4>
             </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>

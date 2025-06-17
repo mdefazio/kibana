@@ -14,6 +14,7 @@ import {
   EuiTitle,
   EuiText,
   EuiLink,
+  EuiPanel,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n-react';
@@ -26,9 +27,11 @@ export const ConnectToElasticsearchSidePanel = () => {
   const { http } = useKibana().services;
 
   return (
-    <EuiSplitPanel.Outer hasShadow={false} color="subdued">
-      <EuiSplitPanel.Inner>
+    <EuiPanel color="subdued">
+      <EuiFlexGroup gutterSize="m" direction="column">
         <EuiCard
+        display="plain"
+        hasBorder
           textAlign="left"
           titleSize="xs"
           title={i18n.translate('xpack.searchHomepage.connectToElasticsearch.uploadFileTitle', {
@@ -52,9 +55,9 @@ export const ConnectToElasticsearchSidePanel = () => {
             </EuiButtonEmpty>
           }
         />
-      </EuiSplitPanel.Inner>
-      <EuiSplitPanel.Inner>
         <EuiCard
+        display="plain"
+        hasBorder
           textAlign="left"
           titleSize="xs"
           title={
@@ -77,30 +80,23 @@ export const ConnectToElasticsearchSidePanel = () => {
             </EuiButtonEmpty>
           }
         />
-      </EuiSplitPanel.Inner>
-      <EuiSplitPanel.Inner>
-        <EuiFlexGroup direction="column" gutterSize="s">
-          <EuiFlexItem grow={false}>
-            <EuiTitle size="xs">
-              <span>
-                {i18n.translate('xpack.searchHomepage.connectToElasticsearch.needAdviceTitle', {
-                  defaultMessage: 'Need advice? Engage a Customer Engineer.',
-                })}
-              </span>
-            </EuiTitle>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiText size="s" color="subdued">
-              {i18n.translate(
-                'xpack.searchHomepage.connectToElasticsearch.getExpertAdviceDescription',
-                {
-                  defaultMessage:
-                    'Get expert advice on best practices, performance, upgrade paths and efficiency. ',
-                }
-              )}
-            </EuiText>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
+        <EuiCard
+          display="transparent"
+          textAlign="left"
+          titleSize="xs"
+          title={
+            <FormattedMessage
+              id="xpack.searchHomepage.connectToElasticsearch.needAdviceTitle"
+              defaultMessage="Need advice? Engage a Customer Engineer"
+            />
+          }
+          description={
+            <FormattedMessage
+              id="xpack.searchHomepage.connectToElasticsearch.getExpertAdviceDescription"
+              defaultMessage="Get expert advice on best practices, performance, upgrade paths and efficiency."
+            />
+          }
+          footer={
             <EuiLink
               href={docLinks.customerEngineerRequestForm}
               data-test-subj="customerEngineerRequestFormLink"
@@ -112,9 +108,9 @@ export const ConnectToElasticsearchSidePanel = () => {
                 }
               )}
             </EuiLink>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      </EuiSplitPanel.Inner>
-    </EuiSplitPanel.Outer>
+          }
+        />
+      </EuiFlexGroup>
+    </EuiPanel>
   );
 };

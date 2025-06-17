@@ -5,67 +5,104 @@
  * 2.0.
  */
 import React from 'react';
-import { EuiPageTemplate, EuiImage, EuiFlexGroup, EuiFlexItem, EuiIcon } from '@elastic/eui';
+import {
+  EuiPageTemplate,
+
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiIcon,
+  useEuiTheme,
+  EuiPanel,
+  EuiText,
+  EuiTitle,
+  EuiSpacer,
+} from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 
-import SearchHomePageImage from '../assets/search_homepage.svg';
+import SearchHomePageImageLight from '../assets/search_homepage_light.svg';
+// import SearchHomePageImageDark from '../assets/search_homepage_dark.svg';
 
-export const SearchHomepageHeader: React.FC = () => (
-  <EuiPageTemplate.Header
-    data-test-subj="search-homepage-header"
-    pageTitle={i18n.translate('xpack.searchHomepage.pageTitle', {
-      defaultMessage: 'Your vector database just got faster',
-    })}
-    description={
-      <EuiFlexGroup gutterSize="m" direction="column">
-        <EuiFlexItem grow={false}>
-          {i18n.translate('xpack.searchHomepage.description', {
-            defaultMessage:
-              'Elasticsearch and Lucene now offer “Better binary quantization”, delivering ~95% memory reduction while maintaining high ranking quality.',
-          })}
+export const SearchHomepageHeader: React.FC = () => {
+  const { euiTheme } = useEuiTheme();
+  const { colorMode } = useEuiTheme();
+  return (
+    <EuiPageTemplate.Section
+      data-test-subj="search-homepage-header"
+      paddingSize="none"
+      color="subdued"
+    >
+      <EuiFlexGroup
+        gutterSize="m"
+        alignItems="stretch"
+        style={{
+          paddingLeft: euiTheme.size.xxxl,
+          paddingRight: euiTheme.size.xxxl,
+        }}
+      >
+        <EuiFlexItem style={{ alignSelf: 'center' }}>
+          <EuiPanel color="transparent" paddingSize="xl">
+            <EuiTitle size="l">
+              <h1>
+                {i18n.translate('xpack.searchHomepage.pageTitle', {
+                  defaultMessage: 'Your vector database just got faster',
+                })}
+              </h1>
+            </EuiTitle>
+            <EuiSpacer size="m" />
+            <EuiText grow={false}>
+              <p>
+                {i18n.translate('xpack.searchHomepage.description', {
+                  defaultMessage:
+                    'Elasticsearch and Lucene now offer “Better binary quantization”, delivering ~95% memory reduction while maintaining high ranking quality.',
+                })}
+              </p>
+            </EuiText>
+            <EuiSpacer size="xl" />
+            <EuiFlexGroup gutterSize="xl">
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup alignItems="center" gutterSize="s">
+                  <EuiFlexItem grow={false}>
+                    <EuiIcon type="checkInCircleFilled" color="primary" />
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    {i18n.translate('xpack.searchHomepage.featureUpdateLabel', {
+                      defaultMessage: 'Feature update',
+                    })}
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup alignItems="center" gutterSize="s">
+                  <EuiFlexItem grow={false}>
+                    <EuiIcon type="checkInCircleFilled" color="primary" />
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    {i18n.translate('xpack.searchHomepage.featureUpdateLabel', {
+                      defaultMessage: 'Feature update',
+                    })}
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup alignItems="center" gutterSize="s">
+                  <EuiFlexItem grow={false}>
+                    <EuiIcon type="checkInCircleFilled" color="primary" />
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    {i18n.translate('xpack.searchHomepage.featureUpdateLabel', {
+                      defaultMessage: 'Feature update',
+                    })}
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiPanel>
         </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiFlexGroup gutterSize="xl">
-            <EuiFlexItem grow={false}>
-              <EuiFlexGroup alignItems="center" gutterSize="s">
-                <EuiFlexItem grow={false}>
-                  <EuiIcon type="checkInCircleFilled" color="primary" />
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                  {i18n.translate('xpack.searchHomepage.featureUpdateLabel', {
-                    defaultMessage: 'Feature update',
-                  })}
-                </EuiFlexItem>
-              </EuiFlexGroup>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiFlexGroup alignItems="center" gutterSize="s">
-                <EuiFlexItem grow={false}>
-                  <EuiIcon type="checkInCircleFilled" color="primary" />
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                  {i18n.translate('xpack.searchHomepage.featureUpdateLabel', {
-                    defaultMessage: 'Feature update',
-                  })}
-                </EuiFlexItem>
-              </EuiFlexGroup>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiFlexGroup alignItems="center" gutterSize="s">
-                <EuiFlexItem grow={false}>
-                  <EuiIcon type="checkInCircleFilled" color="primary" />
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                  {i18n.translate('xpack.searchHomepage.featureUpdateLabel', {
-                    defaultMessage: 'Feature update',
-                  })}
-                </EuiFlexItem>
-              </EuiFlexGroup>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+
+        <EuiFlexItem>
+          {/* {colorMode === 'LIGHT' ? <SearchHomePageImageLight /> :""} */}
         </EuiFlexItem>
       </EuiFlexGroup>
-    }
-    rightSideItems={[<EuiImage size="xl" url={SearchHomePageImage} alt="" />]}
-  />
-);
+    </EuiPageTemplate.Section>
+  );
+};

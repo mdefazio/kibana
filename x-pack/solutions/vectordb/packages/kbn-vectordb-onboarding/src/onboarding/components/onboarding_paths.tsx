@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { EuiBadge, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { useHistory, useLocation } from 'react-router-dom';
 import SearchLakeSvg from '../../assets/search_lake.svg';
@@ -24,17 +24,9 @@ interface CardDescriptionProps {
 
 const CardDescription = ({ text, tags }: CardDescriptionProps) => (
   <>
-    <p>{text}</p>
-    <EuiSpacer size="s" />
-    <EuiFlexGroup gutterSize="xs" wrap responsive={false}>
-      {tags.map((tag) => (
-        <EuiFlexItem key={tag} grow={false}>
-          <EuiBadge iconType="check" color="default">
-            {tag}
-          </EuiBadge>
-        </EuiFlexItem>
-      ))}
-    </EuiFlexGroup>
+    <EuiText size="s" color="subdued">
+      <p>{text}</p>
+    </EuiText>
   </>
 );
 
@@ -56,13 +48,13 @@ export const OnboardingPaths = () => {
           telemetryId="vectordbOnboarding-pathSelection-generateVectors"
           icon={SearchLakeSvg}
           title={i18n.translate('vectordbOnboarding.pathSelection.generate.title', {
-            defaultMessage: 'Generate vectors for me',
+            defaultMessage: 'Generate embeddings from your content',
           })}
           description={
             <CardDescription
               text={i18n.translate('vectordbOnboarding.pathSelection.generate.description', {
                 defaultMessage:
-                  'Bring your content and let Elastic handle the rest with no extra configuration necessary for optimal storage and search latency.',
+                  'Bring your content and Elastic handles embedding and indexing using our built-in models.',
               })}
               tags={generateTags}
             />

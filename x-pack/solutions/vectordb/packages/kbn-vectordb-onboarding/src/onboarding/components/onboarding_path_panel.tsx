@@ -15,6 +15,8 @@ import {
   EuiText,
   EuiTitle,
   useEuiTheme,
+  EuiSpacer,
+  EuiButtonEmpty,
 } from '@elastic/eui';
 
 interface OnboardingPathPanelProps {
@@ -46,21 +48,36 @@ export const OnboardingPathPanel = ({
       data-telemetry-id={telemetryId}
       hasBorder
       paddingSize="none"
+      color="plain"
+      css={{
+        // '&:hover': {
+        //   backgroundColor: euiTheme.colors.backgroundBasePrimary,
+        // },
+        // EuiPanel hasBorder uses a ::after pseudo-element for the border
+        '&:hover::after': {
+          borderColor: euiTheme.colors.primary,
+        },
+        // Split panel children paint their own opaque backgrounds
+        '&:hover .euiSplitPanel, &:hover .euiSplitPanel__inner__icon-panel': {
+          backgroundColor: euiTheme.colors.backgroundBasePrimary,
+        },
+      }}
     >
       <EuiSplitPanel.Outer
         direction="row"
         hasBorder={false}
         hasShadow={false}
+        color="transparent"
         css={{ height: '100%' }}
       >
-        <EuiSplitPanel.Inner color="subdued" grow={false} paddingSize="l">
+        <EuiSplitPanel.Inner color="subdued" grow={false} paddingSize="l" className='euiSplitPanel__inner__icon-panel'>
           <EuiFlexGroup alignItems="center" justifyContent="center" css={{ height: '100%' }}>
             <EuiFlexItem grow={false}>
               <EuiImage size={euiTheme.base * 4} src={icon} alt="" />
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiSplitPanel.Inner>
-        <EuiSplitPanel.Inner paddingSize="l">
+        <EuiSplitPanel.Inner paddingSize="l" color="plain">
           <EuiFlexGroup direction="column" alignItems="flexStart" gutterSize="s">
             <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
               <EuiTitle size="s">
@@ -70,6 +87,8 @@ export const OnboardingPathPanel = ({
             <EuiText color="subdued" size="s">
               {description}
             </EuiText>
+            <EuiSpacer size="xs" />
+            <EuiButtonEmpty color="text" iconSide='right' iconType="sortRight" flush="left" onClick={onClick}>Get started</EuiButtonEmpty>
           </EuiFlexGroup>
         </EuiSplitPanel.Inner>
       </EuiSplitPanel.Outer>

@@ -25,6 +25,8 @@ import {
   EuiText,
   EuiTitle,
   EuiToolTip,
+  EuiTabs,
+  EuiTab,
   useEuiTheme,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
@@ -34,6 +36,7 @@ import { DEFAULT_LANGUAGE, LANGUAGES, type Language, type SnippetSet } from './l
 import { fillPlaceholders } from './snippets';
 import { useOnboardingCredentials } from '../../hooks/use_onboarding_credentials';
 import type { VectorPath, WizardStep } from '../types';
+import { OnboardingDocPanel } from './onboarding_doc_panel';
 
 const SNIPPET_OVERFLOW_HEIGHT = 420;
 
@@ -51,6 +54,7 @@ interface ApiStepProps {
   infoPanel: InfoPanelProps;
   step: WizardStep;
   path: VectorPath;
+  tabs: boolean;
 }
 
 export const ApiStep = ({
@@ -60,6 +64,7 @@ export const ApiStep = ({
   infoPanel,
   step,
   path,
+  tabs,
 }: ApiStepProps) => {
   const {
     services: { application, share, console: consolePlugin },
@@ -77,6 +82,12 @@ export const ApiStep = ({
     elasticsearchUrl ?? undefined,
     apiKey ?? undefined
   );
+  const [selectedTabId, setSelectedTabId] = useState('semantic');
+
+  const onSelectedTabChanged = (id: string) => {
+    setSelectedTabId(id);
+  };
+
 
   const telemetryPrefix = `vectordbOnboarding-${step}-${path}`;
 
@@ -106,156 +117,142 @@ export const ApiStep = ({
 \n${consoleRequest}`;
 
   return (
-    <EuiPanel paddingSize="none" hasBorder css={{ maxWidth: euiTheme.base * 52 }}>
-      <EuiPanel paddingSize="s" hasShadow={false} color="transparent">
-        <EuiFlexGroup
-          justifyContent="spaceBetween"
-          alignItems="center"
-          gutterSize="s"
-          responsive={false}
-        >
-          <EuiFlexItem grow={false}>
-            <EuiPopover
-              button={
-                <EuiButtonEmpty
-                  size="s"
-                  iconType="arrowDown"
-                  color="text"
-                  iconSide="right"
-                  onClick={() => setIsLanguagePopoverOpen(!isLanguagePopoverOpen)}
-                  data-test-subj="vectordbWizardLanguagePicker"
-                  data-telemetry-id={`${telemetryPrefix}-openLanguagePicker`}
-                >
-                  <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-                    {selectedLanguage?.icon && (
-                      <EuiFlexItem grow={false}>
-                        <EuiIcon type={selectedLanguage.icon} size="m" aria-hidden={true} />
-                      </EuiFlexItem>
-                    )}
-                    <EuiFlexItem grow={false}>{selectedLanguage?.label}</EuiFlexItem>
-                  </EuiFlexGroup>
-                </EuiButtonEmpty>
-              }
-              isOpen={isLanguagePopoverOpen}
-              closePopover={() => setIsLanguagePopoverOpen(false)}
-              panelPaddingSize="none"
-              anchorPosition="downLeft"
-              aria-label={i18n.translate('vectordbOnboarding.wizard.languagePickerLegend', {
-                defaultMessage: 'Select a programming language for code snippets',
-              })}
+    <>
+      <EuiPanel paddingSize="s" hasBorder={false} hasShadow={false} color="subdued">
+        <EuiPanel paddingSize="none" hasBorder={false} hasShadow={true} color="plain">
+          <EuiPanel paddingSize="s" hasShadow={false} color="transparent">
+            <EuiFlexGroup
+              justifyContent="flexEnd"
+              alignItems="center"
+              gutterSize="s"
+              responsive={false}
             >
-              <EuiContextMenuPanel items={languageMenuItems} />
-            </EuiPopover>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-              <EuiFlexItem grow={false}>
-                <EuiCopy textToCopy={renderedSnippet}>
-                  {(copy) => (
-                    <EuiButton
-                      size="s"
-                      color="text"
-                      iconType="copy"
-                      iconSide="right"
-                      onClick={copy}
-                      data-test-subj="vectordbWizardCopyCode"
-                      data-telemetry-id={`${telemetryPrefix}-copyCode`}
-                    >
-                      {i18n.translate('vectordbOnboarding.wizard.copyCode', {
-                        defaultMessage: 'Copy',
-                      })}
-                    </EuiButton>
-                  )}
-                </EuiCopy>
+              <EuiFlexItem grow={true}>
+                {tabs && (
+                  <EuiTabs bottomBorder={false} size="s">
+                    <EuiTab key="semantic" id="semantic" isSelected={selectedTabId === 'semantic'} onChange={() => onSelectedTabChanged('semantic')}>Semantic</EuiTab>
+                    <EuiTab key="hybrid" id="hybrid" isSelected={selectedTabId === 'hybrid'} onChange={() => onSelectedTabChanged('hybrid')}>Hybrid</EuiTab>
+                  </EuiTabs>
+                )}
               </EuiFlexItem>
+
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   button={
-                    <EuiToolTip
-                      content={i18n.translate('vectordbOnboarding.wizard.moreActions', {
-                        defaultMessage: 'More actions',
-                      })}
-                      disableScreenReaderOutput
+                    <EuiButtonEmpty
+                      size="s"
+                      iconType="arrowDown"
+                      color="text"
+                      iconSide="right"
+                      onClick={() => setIsLanguagePopoverOpen(!isLanguagePopoverOpen)}
+                      data-test-subj="vectordbWizardLanguagePicker"
+                      data-telemetry-id={`${telemetryPrefix}-openLanguagePicker`}
                     >
-                      <EuiButtonIcon
-                        iconType="boxesVertical"
-                        color="text"
-                        aria-label={i18n.translate('vectordbOnboarding.wizard.moreActions', {
-                          defaultMessage: 'More actions',
-                        })}
-                        onClick={() => setIsActionsPopoverOpen(!isActionsPopoverOpen)}
-                        data-test-subj="vectordbWizardMoreActions"
-                        data-telemetry-id={`${telemetryPrefix}-openMoreActions`}
-                      />
-                    </EuiToolTip>
+                      <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
+                        {selectedLanguage?.icon && (
+                          <EuiFlexItem grow={false}>
+                            <EuiIcon type={selectedLanguage.icon} size="m" aria-hidden={true} />
+                          </EuiFlexItem>
+                        )}
+                        <EuiFlexItem grow={false}>{selectedLanguage?.label}</EuiFlexItem>
+                      </EuiFlexGroup>
+                    </EuiButtonEmpty>
                   }
-                  isOpen={isActionsPopoverOpen}
-                  closePopover={() => setIsActionsPopoverOpen(false)}
+                  isOpen={isLanguagePopoverOpen}
+                  closePopover={() => setIsLanguagePopoverOpen(false)}
                   panelPaddingSize="none"
-                  anchorPosition="downRight"
-                  aria-label={i18n.translate('vectordbOnboarding.wizard.actionsMenu', {
-                    defaultMessage: 'Code actions menu',
+                  anchorPosition="downLeft"
+                  aria-label={i18n.translate('vectordbOnboarding.wizard.languagePickerLegend', {
+                    defaultMessage: 'Select a programming language for code snippets',
                   })}
                 >
-                  <EuiContextMenuPanel
-                    items={[
-                      <TryInConsoleButton
-                        key="runInConsole"
-                        request={requestWithComment}
-                        application={application}
-                        consolePlugin={consolePlugin}
-                        sharePlugin={share}
-                        type="contextMenuItem"
-                        iconType="play"
-                        onClick={() => setIsActionsPopoverOpen(false)}
-                        data-test-subj="vectordbWizardRunInConsole"
-                        telemetryId={`${telemetryPrefix}-runInConsole`}
-                      />,
-                    ]}
-                  />
+                  <EuiContextMenuPanel items={languageMenuItems} />
                 </EuiPopover>
               </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
+                  <EuiFlexItem grow={false}>
+                    <EuiCopy textToCopy={renderedSnippet}>
+                      {(copy) => (
+                        <EuiButton
+                          size="s"
+                          color="text"
+                          iconType="copy"
+                          iconSide="right"
+                          onClick={copy}
+                          data-test-subj="vectordbWizardCopyCode"
+                          data-telemetry-id={`${telemetryPrefix}-copyCode`}
+                        >
+                          {i18n.translate('vectordbOnboarding.wizard.copyCode', {
+                            defaultMessage: 'Copy',
+                          })}
+                        </EuiButton>
+                      )}
+                    </EuiCopy>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </EuiFlexItem>
             </EuiFlexGroup>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      </EuiPanel>
+          </EuiPanel>
 
-      <EuiHorizontalRule margin="none" />
+          <EuiHorizontalRule margin="none" />
 
-      <EuiCodeBlock
-        language={syntax}
-        lineNumbers
-        fontSize="m"
-        paddingSize="m"
-        overflowHeight={SNIPPET_OVERFLOW_HEIGHT}
-        transparentBackground
-        data-test-subj="vectordbWizardSnippet"
-      >
-        {renderedSnippet}
-      </EuiCodeBlock>
-      <EuiHorizontalRule margin="none" />
-      <EuiPanel hasShadow={false} color="subdued">
-        <EuiFlexGroup alignItems="center" gutterSize="xs">
-          <EuiIcon type="documentation" aria-hidden={true} />
-          <EuiTitle size="xs">
-            <h3>{infoPanel.title}</h3>
-          </EuiTitle>
-        </EuiFlexGroup>
-        <EuiSpacer size="s" />
-        <EuiText size="s" color="subdued">
-          <p>{infoPanel.description}</p>
-        </EuiText>
-        <EuiSpacer size="m" />
-        <EuiLink
-          href={infoPanel.docsHref}
-          external
-          target="_blank"
-          data-test-subj="vectordbWizardInfoPanelDocLink"
-          data-telemetry-id={`${telemetryPrefix}-infoPanelDocLink`}
-        >
-          {infoPanel.docsLabel}
-        </EuiLink>
-      </EuiPanel>
-    </EuiPanel>
+          <EuiCodeBlock
+            language={syntax}
+            lineNumbers
+            fontSize="m"
+            paddingSize="m"
+            overflowHeight={SNIPPET_OVERFLOW_HEIGHT}
+            transparentBackground
+            data-test-subj="vectordbWizardSnippet"
+          >
+            {renderedSnippet}
+          </EuiCodeBlock>
+        </EuiPanel >
+        <EuiSpacer size="xs" />
+        <EuiPanel paddingSize="s" hasBorder={false} hasShadow={false} color="transparent">
+          <EuiFlexGroup gutterSize="s" direction="row" alignItems="center" responsive={false}>
+            <EuiFlexItem grow={false}><EuiIcon color='subdued' size='m' type="bulb" aria-hidden={true} /></EuiFlexItem>
+            <EuiFlexItem grow={true}><EuiText size="s" color="subdued">
+              <p>You can use our interactive console to easily send requests to the Elasticsearch REST API</p>
+            </EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <TryInConsoleButton
+                key="runInConsole"
+                request={requestWithComment}
+                application={application}
+                consolePlugin={consolePlugin}
+                sharePlugin={share}
+                type="contextMenuItem"
+                iconType="play"
+                onClick={() => setIsActionsPopoverOpen(false)}
+                data-test-subj="vectordbWizardRunInConsole"
+                telemetryId={`${telemetryPrefix}-runInConsole`}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiPanel>
+      </EuiPanel >
+      <EuiSpacer size="xl" />
+      {/* TODO: This needs cleaning up. The two separate documentation links can now be passed as an array and mapped here. */}
+      <EuiFlexGroup gutterSize="s" direction="column" alignItems="flexStart" responsive={false}>
+        <OnboardingDocPanel
+          title={infoPanel.title}
+          description={infoPanel.description}
+          docsHref={infoPanel.docsHref}
+          docsLabel={infoPanel.docsLabel}
+          telemetryPrefix={telemetryPrefix}
+        />
+        <EuiHorizontalRule margin="s" />
+        <OnboardingDocPanel
+          title={infoPanel.title}
+          description={infoPanel.description}
+          docsHref={infoPanel.docsHref}
+          docsLabel={infoPanel.docsLabel}
+          telemetryPrefix={telemetryPrefix}
+        />
+      </EuiFlexGroup>
+    </>
   );
 };

@@ -12,6 +12,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiLink,
+  EuiPanel,
   EuiPageTemplate,
   EuiSpacer,
   EuiText,
@@ -82,11 +83,11 @@ export const StepLayout = ({
               <h1>{title}</h1>
             </EuiTitle>
             <EuiSpacer size="s" />
-            <EuiText size="s" color="subdued" css={{ maxWidth: euiTheme.base * 36 }}>
+            <EuiText size="m" color="subdued" grow={true}>
               <p>{description}</p>
             </EuiText>
-            <EuiSpacer size="m" />
-            <EuiLink
+            {/* <EuiSpacer size="m" /> */}
+            {/* <EuiLink
               href={docsHref}
               external
               target="_blank"
@@ -94,7 +95,7 @@ export const StepLayout = ({
               data-telemetry-id={`${telemetryIdPrefix}-docsLink`}
             >
               {docsLabel}
-            </EuiLink>
+            </EuiLink> */}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton
@@ -104,10 +105,10 @@ export const StepLayout = ({
                 }).catch((error) => {
                   notifications.toasts.addDanger(
                     error?.body?.message ??
-                      error?.message ??
-                      i18n.translate('vectordbOnboarding.stepLayout.unexpectedError', {
-                        defaultMessage: 'An unexpected error occurred',
-                      })
+                    error?.message ??
+                    i18n.translate('vectordbOnboarding.stepLayout.unexpectedError', {
+                      defaultMessage: 'An unexpected error occurred',
+                    })
                   );
                 })
               }
@@ -123,9 +124,11 @@ export const StepLayout = ({
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>
-        <EuiSpacer size="xl" />
-        <EuiFlexGroup gutterSize="l" alignItems="flexStart">
-          <EuiFlexItem grow={true}>{children}</EuiFlexItem>
+        <EuiSpacer size="l" />
+        <EuiFlexGroup gutterSize="xl" alignItems="flexStart">
+          <EuiFlexItem grow={true}>
+            {children}
+          </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <StepRail
               currentStep={currentStep}

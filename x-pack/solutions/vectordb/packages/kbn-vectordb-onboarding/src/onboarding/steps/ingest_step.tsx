@@ -55,6 +55,7 @@ export const IngestStep = () => {
         infoPanel={infoPanel}
         step={step}
         path={path}
+        tabs={false}
       />
     </StepLayout>
   );

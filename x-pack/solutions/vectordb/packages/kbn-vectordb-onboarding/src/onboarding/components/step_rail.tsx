@@ -85,37 +85,50 @@ export const StepRail = ({ currentStep, stepName, path, onNext, onComplete }: St
     <EuiPanel
       hasShadow={false}
       hasBorder
-      paddingSize="l"
+      paddingSize="none"
       css={{ maxWidth: isLargeScreen ? euiTheme.base * 20 : undefined }}
     >
-      <EuiSteps steps={steps} titleSize="xxs" data-test-subj="vectordbWizardSteps" />
+      <EuiPanel paddingSize="m" color="transparent">
+        <EuiSteps
+          steps={steps}
+          titleSize="xs"
+          data-test-subj="vectordbWizardSteps"
+          css={{
+            "[class*='euiStep__content']": {
+              paddingBlockStart: '0px',
+              paddingBlockEnd: '24px',
+            },
+          }}
+        />
+      </EuiPanel>
       <EuiHorizontalRule margin="none" />
-      <EuiSpacer size="l" />
-      {currentStep === 1 ? (
-        <EuiButton
-          fill
-          fullWidth
-          onClick={onNext}
-          data-test-subj="vectordbWizardReadyToSearch"
-          data-telemetry-id={`${telemetryPrefix}-readyToSearch`}
-        >
-          {i18n.translate('vectordbOnboarding.wizard.readyToSearch', {
-            defaultMessage: "I'm ready to search",
-          })}
-        </EuiButton>
-      ) : (
-        <EuiButton
-          fill
-          fullWidth
-          onClick={onComplete}
-          data-test-subj="vectordbWizardContinueHome"
-          data-telemetry-id={`${telemetryPrefix}-continueToHome`}
-        >
-          {i18n.translate('vectordbOnboarding.wizard.continueToHome', {
-            defaultMessage: 'Continue to home',
-          })}
-        </EuiButton>
-      )}
+      <EuiPanel paddingSize="m" color="transparent">
+        {currentStep === 1 ? (
+          <EuiButton
+            fill
+            fullWidth
+            onClick={onNext}
+            data-test-subj="vectordbWizardReadyToSearch"
+            data-telemetry-id={`${telemetryPrefix}-readyToSearch`}
+          >
+            {i18n.translate('vectordbOnboarding.wizard.readyToSearch', {
+              defaultMessage: "I'm ready to search",
+            })}
+          </EuiButton>
+        ) : (
+          <EuiButton
+            fill
+            fullWidth
+            onClick={onComplete}
+            data-test-subj="vectordbWizardContinueHome"
+            data-telemetry-id={`${telemetryPrefix}-continueToHome`}
+          >
+            {i18n.translate('vectordbOnboarding.wizard.continueToHome', {
+              defaultMessage: 'Continue to home',
+            })}
+          </EuiButton>
+        )}
+      </EuiPanel>
     </EuiPanel>
   );
 };

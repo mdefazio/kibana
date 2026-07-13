@@ -57,6 +57,7 @@ export const SearchStep = () => {
         infoPanel={infoPanel}
         step={step}
         path={path}
+        tabs={path === 'generate-vectors' ? true : false}
       />
     </StepLayout>
   );

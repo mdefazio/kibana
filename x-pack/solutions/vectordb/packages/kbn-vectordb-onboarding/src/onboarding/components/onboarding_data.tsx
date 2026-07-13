@@ -53,7 +53,7 @@ export const getStepContent = (docLinks: DocLinksStart) => ({
             id="vectordbOnboarding.generate.ingest.infoPanel.description"
             defaultMessage="The {semanticText} field type automatically generates embeddings using built-in Jina models. No additional configuration or external inference services required."
             values={{
-              semanticText: <EuiCode>semantic_text</EuiCode>,
+              semanticText: <EuiCode transparentBackground={true}>semantic_text</EuiCode>,
             }}
           />
         ),

@@ -15,20 +15,6 @@ import { OnboardingPathPanel } from './onboarding_path_panel';
 import { pathQuery } from '../../hooks/use_wizard_path';
 import type { VectorPath } from '../types';
 import { ONBOARDING_PATH } from '../../routes';
-import { generateTags, storeTags } from './onboarding_data';
-
-interface CardDescriptionProps {
-  text: string;
-  tags: string[];
-}
-
-const CardDescription = ({ text, tags }: CardDescriptionProps) => (
-  <>
-    <EuiText size="s" color="subdued">
-      <p>{text}</p>
-    </EuiText>
-  </>
-);
 
 export const OnboardingPaths = () => {
   const history = useHistory();
@@ -51,13 +37,14 @@ export const OnboardingPaths = () => {
             defaultMessage: 'Generate embeddings from your content',
           })}
           description={
-            <CardDescription
-              text={i18n.translate('vectordbOnboarding.pathSelection.generate.description', {
-                defaultMessage:
-                  'Bring your content and Elastic handles embedding and indexing using our built-in models.',
-              })}
-              tags={generateTags}
-            />
+            <EuiText size="s" color="subdued">
+              <p>
+                {i18n.translate('vectordbOnboarding.pathSelection.generate.description', {
+                  defaultMessage:
+                    'Ingest your content and let Elastic handle embeddings, storage, and search configuration.',
+                })}
+              </p>
+            </EuiText>
           }
           onClick={() => choose('generate-vectors')}
         />
@@ -68,16 +55,17 @@ export const OnboardingPaths = () => {
           telemetryId="vectordbOnboarding-pathSelection-haveVectors"
           icon={VectorSearchSvg}
           title={i18n.translate('vectordbOnboarding.pathSelection.store.title', {
-            defaultMessage: 'Store and search my vectors',
+            defaultMessage: 'Store your existing embeddings',
           })}
           description={
-            <CardDescription
-              text={i18n.translate('vectordbOnboarding.pathSelection.store.description', {
-                defaultMessage:
-                  'Ingest your vectors into optimized storage and quickly start running your queries.',
-              })}
-              tags={storeTags}
-            />
+            <EuiText size="s" color="subdued">
+              <p>
+                {i18n.translate('vectordbOnboarding.pathSelection.store.description', {
+                  defaultMessage:
+                    'Load your existing embeddings into optimized storage and start searching immediately.',
+                })}
+              </p>
+            </EuiText>
           }
           onClick={() => choose('have-vectors')}
         />

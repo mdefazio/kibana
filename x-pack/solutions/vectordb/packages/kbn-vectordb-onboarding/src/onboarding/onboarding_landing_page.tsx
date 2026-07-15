@@ -12,7 +12,6 @@ import {
   EuiSpacer,
   EuiText,
   EuiTitle,
-  EuiPanel,
   useEuiTheme,
   EuiIcon,
 } from '@elastic/eui';
@@ -36,15 +35,12 @@ export const OnboardingLandingPage = () => {
     <EuiPageTemplate panelled={false} grow={false}>
       <EuiPageTemplate.Section paddingSize="xl" grow={false}>
         <EuiSpacer size="xxl" />
-
-        <EuiPanel paddingSize="none" hasShadow={false}>
-          <EuiIcon size="xl" type="logoVectorDB" />
-        </EuiPanel>
+        <EuiIcon size="xxl" type="logoVectorDB" aria-hidden={true} />
         <EuiSpacer size="l" />
         <EuiTitle size="l">
           <h1>
             {i18n.translate('vectordbOnboarding.pathSelection.title', {
-              defaultMessage: 'Set up your vector database',
+              defaultMessage: 'Set up your Elasticsearch Vector Database',
             })}
           </h1>
         </EuiTitle>
@@ -53,7 +49,7 @@ export const OnboardingLandingPage = () => {
           <p>
             {i18n.translate('vectordbOnboarding.pathSelection.description', {
               defaultMessage:
-                'Copy your connection details below and choose a setup path to get your first search running.',
+                'Production-grade defaults, hybrid search, and your choice of generating embeddings or bringing your own.',
             })}
           </p>
         </EuiText>

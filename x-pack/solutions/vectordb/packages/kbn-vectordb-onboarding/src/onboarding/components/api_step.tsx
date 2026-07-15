@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 import {
   EuiButton,
   EuiButtonEmpty,
-  EuiButtonIcon,
   EuiCodeBlock,
   EuiContextMenuItem,
   EuiContextMenuPanel,
@@ -18,16 +17,12 @@ import {
   EuiFlexItem,
   EuiHorizontalRule,
   EuiIcon,
-  EuiLink,
   EuiPanel,
   EuiPopover,
   EuiSpacer,
   EuiText,
+  EuiTextColor,
   EuiTitle,
-  EuiToolTip,
-  EuiTabs,
-  EuiTab,
-  useEuiTheme,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { TryInConsoleButton } from '@kbn/try-in-console';
@@ -35,26 +30,18 @@ import { useKibana } from '../../services';
 import { DEFAULT_LANGUAGE, LANGUAGES, type Language, type SnippetSet } from './languages';
 import { fillPlaceholders } from './snippets';
 import { useOnboardingCredentials } from '../../hooks/use_onboarding_credentials';
-import type { VectorPath, WizardStep } from '../types';
+import type { InfoPanelProps, VectorPath, WizardStep } from '../types';
 import { OnboardingDocPanel } from './onboarding_doc_panel';
 
 const SNIPPET_OVERFLOW_HEIGHT = 420;
-
-interface InfoPanelProps {
-  title: string;
-  description: React.ReactNode;
-  docsLabel: string;
-  docsHref: string;
-}
 
 interface ApiStepProps {
   snippets: SnippetSet;
   consoleRequest: string;
   consoleComment: string;
-  infoPanel: InfoPanelProps;
+  infoPanel: InfoPanelProps[];
   step: WizardStep;
   path: VectorPath;
-  tabs: boolean;
 }
 
 export const ApiStep = ({
@@ -64,16 +51,13 @@ export const ApiStep = ({
   infoPanel,
   step,
   path,
-  tabs,
 }: ApiStepProps) => {
   const {
     services: { application, share, console: consolePlugin },
   } = useKibana();
-  const { euiTheme } = useEuiTheme();
   const { elasticsearchUrl, apiKey } = useOnboardingCredentials();
   const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
   const [isLanguagePopoverOpen, setIsLanguagePopoverOpen] = useState(false);
-  const [isActionsPopoverOpen, setIsActionsPopoverOpen] = useState(false);
 
   const selectedLanguage = LANGUAGES.find((l) => l.id === language);
   const syntax = selectedLanguage?.syntax ?? 'python';
@@ -82,12 +66,6 @@ export const ApiStep = ({
     elasticsearchUrl ?? undefined,
     apiKey ?? undefined
   );
-  const [selectedTabId, setSelectedTabId] = useState('semantic');
-
-  const onSelectedTabChanged = (id: string) => {
-    setSelectedTabId(id);
-  };
-
 
   const telemetryPrefix = `vectordbOnboarding-${step}-${path}`;
 
@@ -127,15 +105,6 @@ export const ApiStep = ({
               gutterSize="s"
               responsive={false}
             >
-              <EuiFlexItem grow={true}>
-                {tabs && (
-                  <EuiTabs bottomBorder={false} size="s">
-                    <EuiTab key="semantic" id="semantic" isSelected={selectedTabId === 'semantic'} onChange={() => onSelectedTabChanged('semantic')}>Semantic</EuiTab>
-                    <EuiTab key="hybrid" id="hybrid" isSelected={selectedTabId === 'hybrid'} onChange={() => onSelectedTabChanged('hybrid')}>Hybrid</EuiTab>
-                  </EuiTabs>
-                )}
-              </EuiFlexItem>
-
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   button={
@@ -208,50 +177,57 @@ export const ApiStep = ({
           >
             {renderedSnippet}
           </EuiCodeBlock>
-        </EuiPanel >
-        <EuiSpacer size="xs" />
-        <EuiPanel paddingSize="s" hasBorder={false} hasShadow={false} color="transparent">
+        </EuiPanel>
+        <EuiSpacer size="s" />
+        <EuiPanel paddingSize="xs" hasBorder={false} hasShadow={false} color="transparent">
           <EuiFlexGroup gutterSize="s" direction="row" alignItems="center" responsive={false}>
-            <EuiFlexItem grow={false}><EuiIcon color='subdued' size='m' type="bulb" aria-hidden={true} /></EuiFlexItem>
-            <EuiFlexItem grow={true}><EuiText size="s" color="subdued">
-              <p>You can use our interactive console to easily send requests to the Elasticsearch REST API</p>
-            </EuiText>
+            <EuiFlexItem grow={false}>
+              <EuiIcon color="subdued" size="m" type="bulb" aria-hidden={true} />
+            </EuiFlexItem>
+            <EuiFlexItem grow={true}>
+              <EuiText size="s" color="subdued">
+                <p>
+                  {i18n.translate('vectordbOnboarding.apiStep.tryInConsoleDescription', {
+                    defaultMessage:
+                      'You can use our interactive console to easily send requests to the Elasticsearch REST API',
+                  })}
+                </p>
+              </EuiText>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <TryInConsoleButton
-                key="runInConsole"
                 request={requestWithComment}
                 application={application}
                 consolePlugin={consolePlugin}
                 sharePlugin={share}
-                type="contextMenuItem"
-                iconType="play"
-                onClick={() => setIsActionsPopoverOpen(false)}
+                type="emptyButton"
+                color="text"
+                iconType="sessionViewer"
                 data-test-subj="vectordbWizardRunInConsole"
                 telemetryId={`${telemetryPrefix}-runInConsole`}
               />
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiPanel>
-      </EuiPanel >
-      <EuiSpacer size="xl" />
-      {/* TODO: This needs cleaning up. The two separate documentation links can now be passed as an array and mapped here. */}
+      </EuiPanel>
+      <EuiSpacer size="xxl" />
+      <EuiTitle size="xxs">
+        <h2>
+          <EuiTextColor color="subdued">
+            {i18n.translate('vectordbOnboarding.apiStep.documentationTitle', {
+              defaultMessage: 'Documentation',
+            })}
+          </EuiTextColor>
+        </h2>
+      </EuiTitle>
+      <EuiSpacer size="l" />
       <EuiFlexGroup gutterSize="s" direction="column" alignItems="flexStart" responsive={false}>
-        <OnboardingDocPanel
-          title={infoPanel.title}
-          description={infoPanel.description}
-          docsHref={infoPanel.docsHref}
-          docsLabel={infoPanel.docsLabel}
-          telemetryPrefix={telemetryPrefix}
-        />
-        <EuiHorizontalRule margin="s" />
-        <OnboardingDocPanel
-          title={infoPanel.title}
-          description={infoPanel.description}
-          docsHref={infoPanel.docsHref}
-          docsLabel={infoPanel.docsLabel}
-          telemetryPrefix={telemetryPrefix}
-        />
+        {infoPanel.map((doc, i) => (
+          <React.Fragment key={doc.id}>
+            {i > 0 && <EuiHorizontalRule margin="m" />}
+            <OnboardingDocPanel doc={doc} telemetryPrefix={telemetryPrefix} />
+          </React.Fragment>
+        ))}
       </EuiFlexGroup>
     </>
   );

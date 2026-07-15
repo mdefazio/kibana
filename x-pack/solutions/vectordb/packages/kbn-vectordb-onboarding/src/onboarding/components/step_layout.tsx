@@ -11,8 +11,6 @@ import {
   EuiButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiLink,
-  EuiPanel,
   EuiPageTemplate,
   EuiSpacer,
   EuiText,
@@ -32,8 +30,6 @@ interface StepLayoutProps {
   step: WizardStep;
   title: string;
   description: React.ReactNode;
-  docsLabel: string;
-  docsHref: string;
   onBack?: () => void;
   onNext?: () => void;
   onComplete?: () => void;
@@ -46,8 +42,6 @@ export const StepLayout = ({
   step,
   title,
   description,
-  docsLabel,
-  docsHref,
   onBack,
   onNext,
   onComplete,
@@ -83,19 +77,9 @@ export const StepLayout = ({
               <h1>{title}</h1>
             </EuiTitle>
             <EuiSpacer size="s" />
-            <EuiText size="m" color="subdued" grow={true}>
+            <EuiText size="m" color="subdued" css={{ maxWidth: euiTheme.base * 40 }}>
               <p>{description}</p>
             </EuiText>
-            {/* <EuiSpacer size="m" /> */}
-            {/* <EuiLink
-              href={docsHref}
-              external
-              target="_blank"
-              data-test-subj="stepLayoutDocsLink"
-              data-telemetry-id={`${telemetryIdPrefix}-docsLink`}
-            >
-              {docsLabel}
-            </EuiLink> */}
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton
@@ -105,10 +89,10 @@ export const StepLayout = ({
                 }).catch((error) => {
                   notifications.toasts.addDanger(
                     error?.body?.message ??
-                    error?.message ??
-                    i18n.translate('vectordbOnboarding.stepLayout.unexpectedError', {
-                      defaultMessage: 'An unexpected error occurred',
-                    })
+                      error?.message ??
+                      i18n.translate('vectordbOnboarding.stepLayout.unexpectedError', {
+                        defaultMessage: 'An unexpected error occurred',
+                      })
                   );
                 })
               }
@@ -126,9 +110,7 @@ export const StepLayout = ({
         </EuiFlexGroup>
         <EuiSpacer size="l" />
         <EuiFlexGroup gutterSize="xl" alignItems="flexStart">
-          <EuiFlexItem grow={true}>
-            {children}
-          </EuiFlexItem>
+          <EuiFlexItem grow={true}>{children}</EuiFlexItem>
           <EuiFlexItem grow={false}>
             <StepRail
               currentStep={currentStep}

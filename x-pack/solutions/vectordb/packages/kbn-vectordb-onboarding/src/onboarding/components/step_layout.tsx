@@ -15,7 +15,6 @@ import {
   EuiSpacer,
   EuiText,
   EuiTitle,
-  useEuiTheme,
 } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import { FormattedMessage } from '@kbn/i18n-react';
@@ -47,7 +46,6 @@ export const StepLayout = ({
   onComplete,
   children,
 }: StepLayoutProps) => {
-  const { euiTheme } = useEuiTheme();
   const {
     services: { notifications },
   } = useKibana();
@@ -77,7 +75,7 @@ export const StepLayout = ({
               <h1>{title}</h1>
             </EuiTitle>
             <EuiSpacer size="s" />
-            <EuiText size="m" color="subdued" css={{ maxWidth: euiTheme.base * 40 }}>
+            <EuiText size="m" color="subdued" grow={false}>
               <p>{description}</p>
             </EuiText>
           </EuiFlexItem>
